@@ -1,8 +1,7 @@
 const { Shema, model } = require('mongoose');
 
 
-const userSchema = new Schema(
-    {
+const userSchema = new Schema ({
         username: {
             type: String,
             unique: true,
@@ -13,7 +12,7 @@ const userSchema = new Schema(
             type: String,
             required: true, 
             unique: true,
-            match: [/.+@.+\..+/]
+            match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/]
         },
         thoughts: [{ 
             type: Schema.Types.ObjectId,
@@ -25,7 +24,8 @@ const userSchema = new Schema(
         }]},
         {
         toJSON: {
-            virtuals: true
+            virtuals: true,
+            getters: true
         },
         id: false
     });
