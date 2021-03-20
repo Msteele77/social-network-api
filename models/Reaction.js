@@ -1,10 +1,10 @@
-const { Schema, model } = require('mongoose');
+const { Schema, model, Types } = require('mongoose');
 const dateFormat = require('../utils/dateFormat');
 
 const reactionSchema = new Schema({
     reactionId: {
-        type: Types.ObjectId,
-        default: new Types.ObjectId()
+        type: Schema.Types.ObjectId,
+        default: () => new Types.ObjectId()
     },
     reactionBody: {
         type: String,
@@ -27,5 +27,7 @@ const reactionSchema = new Schema({
     },
     id: false
 });
+
+const User = model('Reaction', reactionSchema);
 
 module.exports = reactionSchema;

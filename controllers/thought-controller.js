@@ -36,7 +36,7 @@ const thoughtController = {
     },
 
     
-    createThought({ body }, res) {
+    createThought({ params, body }, res) {
         Thought.create(body)
         .then(dbThoughtData => {
             User.findOneAndUpdate(

@@ -12,10 +12,10 @@ const {
 } = require('../../controllers/user-controller');
 
 
-router
+/*router
     .route('/')
-    .get()
-    .post();
+    .get(getAllUsers)
+    .post();*/
 
 router
     .route('/')
