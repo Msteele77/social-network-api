@@ -1,7 +1,4 @@
-//const { User, Thought, Reaction } = require('../models');
-
-const  Thought  = require('../models/Thought');
-const User = require('../models/User');
+const { Thought, User } = require("../models");
 
 const thoughtController = {
 
@@ -19,7 +16,7 @@ const thoughtController = {
 
     // get thoughts by id
     getThoughtById({ params }, res) {
-        Thought.findOne({ _id: params.id })
+        Thought.findOne({ _id: params.thoughtid })
         //.populate({ path: 'reactions', select: '-__v' })
         .select('-__v')
         .then(dbThoughtData => {
@@ -60,9 +57,10 @@ const thoughtController = {
     
     updateThought({ params, body }, res) {
         Thought.findOneAndUpdate(
-            { _id: params.id },
+            { _id: params.thoughtid },
             body,
-            { new: true }
+            { new: true,
+            runValidators: true, }
         )
         .then(dbThoughtData => {
             if (!dbThoughtData) {
@@ -78,7 +76,7 @@ const thoughtController = {
     // delete thought by id
     deleteThought({ params }, res) {
         
-        Thought.findOneAndDelete({ _id: params.id })
+        Thought.findOneAndDelete({ _id: params.thoughtid })
         .then(dbThoughtData => {
             if (!dbThoughtData) {
                 res.status(404).json({ message: 'No thought found with this id'});
@@ -87,7 +85,7 @@ const thoughtController = {
             
             User.findOneAndUpdate(
                 { username: dbThoughtData.username },
-                { $pull: { thoughts: params.id } }
+                { $pull: { thoughts: params.thoughtid } }
             )
             .then(() => {
                 res.json({message: 'Successfully deleted the thought'});
