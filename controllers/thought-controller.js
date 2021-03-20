@@ -8,7 +8,7 @@ const thoughtController = {
     // GET all thoughts
     getAllThoughts(req, res) {
         Thought.find({})
-        .populate({ path: 'reactions', select: '-__v' })
+        //.populate({ path: 'reactions', select: '-__v' })
         .select('-__v')
         .then(dbThoughtData => res.json(dbThoughtData))
         .catch(err => {
@@ -20,7 +20,7 @@ const thoughtController = {
     // get thoughts by id
     getThoughtById({ params }, res) {
         Thought.findOne({ _id: params.id })
-        .populate({ path: 'reactions', select: '-__v' })
+        //.populate({ path: 'reactions', select: '-__v' })
         .select('-__v')
         .then(dbThoughtData => {
             if (!dbThoughtData) {
@@ -38,10 +38,10 @@ const thoughtController = {
     
     createThought({ params, body }, res) {
         Thought.create(body)
-        .then(dbThoughtData => {
+        .then(({ _id }) => {
             User.findOneAndUpdate(
-                { _id: body.userId },
-                { $push: { thoughts: dbThoughtData._id } },
+                { _id: params.userId },
+                { $push: { thoughts: _id } },
                 { new: true }
             )
             .then(dbUserData => {
